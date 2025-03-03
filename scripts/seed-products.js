@@ -1,10 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env file if present
 dotenv.config();
 
-// Define product schema (matching the one in the product service)
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -31,10 +29,8 @@ const productSchema = new mongoose.Schema({
   }
 });
 
-// Create Product model
 const Product = mongoose.model('Product', productSchema);
 
-// Sample product data
 const sampleProducts = [
   {
     name: 'Smartphone X',
@@ -68,30 +64,24 @@ const sampleProducts = [
   }
 ];
 
-// Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce';
 
 async function seedProducts() {
   try {
-    // Connect to MongoDB
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');
     
-    // Clear existing products
     await Product.deleteMany({});
     console.log('Cleared existing products');
     
-    // Insert new products
     const insertedProducts = await Product.insertMany(sampleProducts);
     console.log(`Successfully inserted ${insertedProducts.length} products`);
     
-    // Log inserted products
     console.log('Inserted products:');
     insertedProducts.forEach(product => {
       console.log(`- ${product.name} ($${product.price}) - ${product.stock} in stock`);
     });
     
-    // Disconnect from MongoDB
     await mongoose.disconnect();
     console.log('Disconnected from MongoDB');
     
@@ -101,5 +91,4 @@ async function seedProducts() {
   }
 }
 
-// Run the seeding function
 seedProducts();

@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-  # Frontend service
   frontend:
     build: 
       context: ./frontend
@@ -21,7 +20,6 @@ services:
     networks:
       - ecommerce-network
 
-  # Product service
   product-service:
     build: 
       context: ./services/product-service
@@ -38,7 +36,6 @@ services:
     networks:
       - ecommerce-network
 
-  # Auth service
   auth-service:
     build: 
       context: ./services/auth-service
@@ -55,7 +52,6 @@ services:
     networks:
       - ecommerce-network
 
-  # Order service
   order-service:
     build: 
       context: ./services/order-service
@@ -66,13 +62,13 @@ services:
       - PORT=3002
       - MONGODB_URI=mongodb://mongodb:27017/ecommerce
       - JWT_SECRET=efrei_super_pass
+      - VITE_PRODUCT_SERVICE_URL=${VITE_PRODUCT_SERVICE_URL}
     depends_on:
       - mongodb
     restart: unless-stopped
     networks:
       - ecommerce-network
 
-  # MongoDB service
   mongodb:
     build: 
       context: ./services/mongodb
